@@ -4,61 +4,25 @@
 
     <div class="filters">
       <h3>Filters</h3>
-      <div>
-        <label for="checkbox">In Stock</label>
-        <input
-          @click="toggleIsAvailable"
-          type="checkbox"
-          id="checkbox"
-          v-model="isAvailable"
-        />
+      <div class="in-stock-checkbox">
+        <Checkbox @click="toggleIsAvailable" text="In Stock"/>
       </div>
-      <div>
-        <label for="checkbox">Adidas</label>
-        <input
-          @click="toggleIsAdidas"
-          type="checkbox"
-          id="checkbox"
-          v-model="isAdidas"
-        />
+      <div class="adidas-checkbox">
+        <Checkbox @click="toggleIsAdidas" text="Adidas"/>
       </div>
-      <div>
-        <label for="checkbox">Nike</label>
-        <input
-          @click="toggleIsNike"
-          type="checkbox"
-          id="checkbox"
-          v-model="isNike"
-        />
+      <div class="nike-checkbox">
+        <Checkbox @click="toggleIsNike" text="Nike"/>
       </div>
-      <div>
-        <label for="checkbox">Converse</label>
-        <input
-          @click="toggleIsConverse"
-          type="checkbox"
-          id="checkbox"
-          v-model="isConverse"
-        />
+      <div class="converse-checkbox">
+        <Checkbox @click="toggleIsConverse" text="Converse"/>
       </div>
-      <div>
-        <label for="checkbox">Crocs</label>
-        <input
-          @click="toggleIsCrocs"
-          type="checkbox"
-          id="checkbox"
-          v-model="isCrocs"
-        />
+      <div class="crocs-checkbox">
+        <Checkbox @click="toggleIsCrocs" text="Crocs"/>
+      </div>
+      <div class="new-balance-checkbox">
+        <Checkbox @click="toggleIsNewBalance" text="New Balance"/>
       </div>
       
-      <div>
-        <label for="checkbox">New Balance</label>
-        <input
-          @click="toggleIsNewBalance"
-          type="checkbox"
-          id="checkbox"
-          v-model="isNewBalance"
-        />
-      </div>
       <div>
         <label for="sortBy">Sort By: </label>
         <select v-model="sortBy">
@@ -91,17 +55,17 @@
 <script>
 import ProductGridItem from './components/ProductGridItem.vue';
 import products from './data/products.json';
+import Checkbox from './components/Checkbox.vue';
 
 export default {
   name: 'App',
   components: {
-    ProductGridItem,
+    ProductGridItem, Checkbox,
   },
   props: ['products'],
   data() {
     return {
       products: products,
-      // relevance: false,
       isAvailable: false,
       isNike: false,
       isAdidas: false,
