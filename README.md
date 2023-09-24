@@ -7,7 +7,7 @@
 - Further things to consider - should the filter options be stored in a Filter component?
 
 ## Diagram
-![diagram for display function](./diagrams/diagram.png)
+![diagram for display function](./diagram.png)
 
 You are provided with a set of products and are required to create a products listing page for a footwear retailer.
 
