@@ -33,32 +33,22 @@
     <p>Results: {{ itemsToDisplay.length }}</p>
 
     <div class="product-grid">
-      <ul>
-        <li v-for="product in itemsToDisplay" :key="product.name">
-          <ProductGridItem
-            :img="product.image"
-            :name="product.name"
-            :price="product.price"
-            :brand="product.brand"
-            :rank="product.rank"
-            :isAvailable="product.isAvailable"
-          />
-        </li>
-      </ul>
+     <ProductGrid :products="itemsToDisplay" />
+
     </div>
   </div>
 </template>
 
 <script>
-import ProductGridItem from './components/ProductGridItem.vue';
 import products from './data/products.json';
 import Checkbox from './components/Checkbox.vue';
 import DropdownMenu from './components/DropdownMenu.vue';
+import ProductGrid from './components/ProductGrid.vue'
 
 export default {
   name: 'App',
   components: {
-    ProductGridItem, Checkbox, DropdownMenu,
+    Checkbox, DropdownMenu, ProductGrid,
   },
   data() {
     return {
