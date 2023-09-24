@@ -60,14 +60,23 @@
         />
       </div>
       <div>
-        <label for="priceOrder">Sort By Price </label>
-        <select v-model="priceOrder">
+        <label for="currentPriceOrder">Sort By Price </label>
+        <select v-model="priceOrder" :disabled="relevance">
           <option value=""></option>
           <option value="ascending">Low - High</option>
           <option value="descending">High - Low</option>
         </select>
       </div>
     </div>
+    <div>
+        <label for="checkbox">Relevance</label>
+        <input
+          @click="toggleRelevance"
+          type="checkbox"
+          id="checkbox"
+          v-model="relevance"
+        />
+      </div>
     <p>Results: {{ itemsToDisplay.length }}</p>
 
     <div class="product-grid">
@@ -78,6 +87,7 @@
             :name="product.name"
             :price="product.price"
             :brand="product.brand"
+            :rank="product.rank"
             :isAvailable="product.isAvailable"
           />
         </li>
@@ -99,6 +109,7 @@ export default {
   data() {
     return {
       products: products,
+      relevance: false,
       isAvailable: false,
       isNike: false,
       isAdidas: false,
@@ -119,6 +130,9 @@ export default {
       } else {
         this.brands = this.brands.filter(item => item != brand)
       }
+    },
+    toggleRelevance() {
+      this.relevance = !this.relevance;
     },
     toggleIsNike() {
       this.isNike = !this.isNike;
@@ -177,13 +191,35 @@ export default {
          return products;
       }
     },
+    filterByRelevance(products) {
+      if (this.relevance) {
+        const availableProducts = products.filter((product) => product.isAvailable);
+        const unavailableProducts = products.filter((product) => !product.isAvailable);
+
+      // Sort available products by rank
+        const sortedAvailableProducts = availableProducts.sort((a, b) => a.rank - b.rank);
+
+      // Sort unavailable products by rank
+        const sortedUnavailableProducts = unavailableProducts.sort((a, b) => a.rank - b.rank);
+
+      // Concatenate available and unavailable products
+        return [...sortedAvailableProducts, ...sortedUnavailableProducts];
+      } else {
+        return products;
+      }
+    },
+      
   },
   computed: {
+    currentPriceOrder() {
+      return this.relevance ? '' : this.priceOrder;
+    },
     itemsToDisplay() {
       let products = this.products       
       let firstFiltered = this.filterByAvailability(products)
       let secondFiltered =  this.filterByBrand(firstFiltered)
-      return this.filterByPrice(secondFiltered)
+      let thirdFiltered = this.filterByPrice(secondFiltered)
+      return this.filterByRelevance(thirdFiltered)
 
     },
   },

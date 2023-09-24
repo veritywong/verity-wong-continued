@@ -5,6 +5,7 @@
     <p class="product-price">£{{ price }}</p>
     <p class="product-brand">{{ brand }}</p>
     <p class="product-availability">{{ isAvailable }}</p>
+    <p class="rank">{{ rank }}</p>
   </div>
 </template>
 
@@ -14,7 +15,7 @@ export default {
   // props: {
   //   product: { type: Object, required: true, default: () => ({}) },
   // },
-  props: ['img', 'name', 'price', 'brand', 'isAvailable'],
+  props: ['img', 'name', 'price', 'brand', 'isAvailable', 'rank'],
 };
 </script>
 
