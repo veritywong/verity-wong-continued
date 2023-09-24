@@ -14,6 +14,15 @@
         />
       </div>
       <div>
+        <label for="checkbox">Adidas</label>
+        <input
+          @click="toggleIsAdidas"
+          type="checkbox"
+          id="checkbox"
+          v-model="isAdidas"
+        />
+      </div>
+      <div>
         <label for="checkbox">Nike</label>
         <input
           @click="toggleIsNike"
@@ -23,12 +32,31 @@
         />
       </div>
       <div>
-        <label for="checkbox">Adidas</label>
+        <label for="checkbox">Converse</label>
         <input
-          @click="toggleIsAdidas"
+          @click="toggleIsConverse"
           type="checkbox"
           id="checkbox"
-          v-model="isAdidas"
+          v-model="isConverse"
+        />
+      </div>
+      <div>
+        <label for="checkbox">Crocs</label>
+        <input
+          @click="toggleIsCrocs"
+          type="checkbox"
+          id="checkbox"
+          v-model="isCrocs"
+        />
+      </div>
+      
+      <div>
+        <label for="checkbox">New Balance</label>
+        <input
+          @click="toggleIsNewBalance"
+          type="checkbox"
+          id="checkbox"
+          v-model="isNewBalance"
         />
       </div>
       <div>
@@ -40,7 +68,7 @@
         </select>
       </div>
     </div>
-    <!-- <p>Results: {{ itemsToDisplay.length }}</p> -->
+    <p>Results: {{ itemsToDisplay.length }}</p>
 
     <div class="product-grid">
       <ul>
@@ -74,7 +102,10 @@ export default {
       isAvailable: false,
       isNike: false,
       isAdidas: false,
-      brands: ['Nike', 'Adidas'],
+      isCrocs: false,
+      isConverse: false,
+      isNewBalance: false,
+      brands: [],
       priceOrder: '',
     };
   },
@@ -82,39 +113,50 @@ export default {
     toggleIsAvailable() {
       this.isAvailable = !this.isAvailable;
     },
+    updateBrands(state, brand) {
+        if (state) {
+        this.brands.push(brand)
+      } else {
+        this.brands = this.brands.filter(item => item != brand)
+      }
+    },
     toggleIsNike() {
       this.isNike = !this.isNike;
-      this.brand = 'Nike'
-    },
+      this.updateBrands(this.isNike, 'Nike')
+    }, 
     toggleIsAdidas() {
       this.isAdidas = !this.isAdidas;
-      this.brand = 'Adidas'
+      this.updateBrands(this.isAdidas, 'Adidas')
+    },
+    toggleIsCrocs() {
+      this.isCrocs = !this.isCrocs;
+      this.updateBrands(this.isCrocs, 'Crocs')
+    },
+    toggleIsConverse() {
+      this.isConverse = !this.isConverse;
+      this.updateBrands(this.isConverse, 'Converse')
+    },
+    toggleIsNewBalance() {
+      this.isNewBalance = !this.isNewBalance;
+      this.updateBrands(this.isNewBalance, 'New Balance')
     },
     filterByAvailability(products) {
       return this.isAvailable
         ? this.products.filter((item) => item.isAvailable)
         : products;
     },
-    // filterBrand(products) {
-    //   return this.brand
-    //     ? this.products.filter((item) => item.brand === this.brand)
-    //     : products;
-    // },
     filterByBrand(products) {
-
+      let filteredBrands = []
+      let items
       if (this.brands.length) {
         for (let i = 0; i < this.brands.length; i++) {
-          let item = products.filter((item) => item.brand === this.brands[i])
-          console.log(item)
+          items = products.filter((item) => item.brand === this.brands[i])
+          filteredBrands = [...filteredBrands, ...items];
         }
-
       } else {
         return products;
       }
- 
-      // return products.filter((product) => {
-      //   return !this[`is${brand}`] || product.brand === brand;
-      // });
+      return filteredBrands
     },
     filterNike(products) {
       return this.isNike
@@ -138,41 +180,11 @@ export default {
   },
   computed: {
     itemsToDisplay() {
-      let products = this.products;
-      // let availableProducts = this.filterIsAvailable(products);
-      // let productsByPrice = this.filterByPrice(availableProducts)
-      // let nikes = this.filterNike(productsByPrice);
-      // let adidas = this.filterAdidas(products);
-      // console.log(this.isAvailable)
-      // return this.filterAdidas(nikes);
-       
-       return this.filterByBrand(products)
-
+      let products = this.products       
       let firstFiltered = this.filterByAvailability(products)
-      let secondFiltered =  this.filterNike(firstFiltered)
+      let secondFiltered =  this.filterByBrand(firstFiltered)
       return this.filterByPrice(secondFiltered)
 
-      // return this.products.filter((product) => {
-      //   const isAvailable = !this.isAvailable || product.isAvailable;
-      //   const isNike = !this.isNike || product.brand === 'Nike';
-      //   const isAdidas = !this.isAdidas || product.brand === 'Adidas';
-      //   // console.log(isAvailable)
-      //   // not showing anything when nike and adidas both chosen
-      //   return isAvailable && isNike && isAdidas;
-      // });
-
-      // return this.filterAdidas(products).filter((product) => availableProducts.includes(product));
-
-      // if (this.brand || this.priceOrder) {
-      //   console.log(this.brand)
-      //   return this.filterByPrice(this.filterNike(products));
-      // }
-      
-      // // in stock and nike filter working togeter
-      // return this.filterNike(products).filter((product) => availableProducts.includes(product));
-      
-      // price filter working individually
-      // return this.filterByPrice(products)
     },
   },
 };
