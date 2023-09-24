@@ -60,23 +60,15 @@
         />
       </div>
       <div>
-        <label for="currentPriceOrder">Sort By Price </label>
-        <select v-model="priceOrder" :disabled="relevance">
+        <label for="sortBy">Sort By: </label>
+        <select v-model="sortBy">
           <option value=""></option>
           <option value="ascending">Low - High</option>
           <option value="descending">High - Low</option>
+          <option value="relevance">Relevance</option>
         </select>
       </div>
     </div>
-    <div>
-        <label for="checkbox">Relevance</label>
-        <input
-          @click="toggleRelevance"
-          type="checkbox"
-          id="checkbox"
-          v-model="relevance"
-        />
-      </div>
     <p>Results: {{ itemsToDisplay.length }}</p>
 
     <div class="product-grid">
@@ -109,7 +101,7 @@ export default {
   data() {
     return {
       products: products,
-      relevance: false,
+      // relevance: false,
       isAvailable: false,
       isNike: false,
       isAdidas: false,
@@ -117,7 +109,7 @@ export default {
       isConverse: false,
       isNewBalance: false,
       brands: [],
-      priceOrder: '',
+      sortBy: '',
     };
   },
   methods: {
@@ -130,9 +122,6 @@ export default {
       } else {
         this.brands = this.brands.filter(item => item != brand)
       }
-    },
-    toggleRelevance() {
-      this.relevance = !this.relevance;
     },
     toggleIsNike() {
       this.isNike = !this.isNike;
@@ -172,55 +161,35 @@ export default {
       }
       return filteredBrands
     },
-    filterNike(products) {
-      return this.isNike
-        ? this.products.filter((item) => item.brand === 'Nike')
-        : products;
+    sortByRelevance(products) {
+        const availableProducts = products.filter((product) => product.isAvailable);
+        const unavailableProducts = products.filter((product) => !product.isAvailable);
+      // Sort available products by rank
+        const sortedAvailableProducts = availableProducts.sort((a, b) => a.rank - b.rank);
+      // Sort unavailable products by rank
+        const sortedUnavailableProducts = unavailableProducts.sort((a, b) => a.rank - b.rank);
+      // Concatenate available and unavailable products
+        return [...sortedAvailableProducts, ...sortedUnavailableProducts];
     },
-    filterAdidas(products) {
-      return this.isAdidas
-        ? this.products.filter((item) => item.brand === 'Adidas')
-        : products;
-    },
-    filterByPrice(products) {
-      if (this.priceOrder === "ascending") {
+    sortOrder(products) {
+      if (this.sortBy === "ascending") {
          return [...products].sort((a, b) => a.price - b.price);
-      } else if (this.priceOrder === "descending") {
+      } else if (this.sortBy === "descending") {
          return [...products].sort((a, b) => b.price - a.price);
+      } else if (this.sortBy === "relevance") {
+        return this.sortByRelevance(products)
       } else {
          return products;
       }
-    },
-    filterByRelevance(products) {
-      if (this.relevance) {
-        const availableProducts = products.filter((product) => product.isAvailable);
-        const unavailableProducts = products.filter((product) => !product.isAvailable);
-
-      // Sort available products by rank
-        const sortedAvailableProducts = availableProducts.sort((a, b) => a.rank - b.rank);
-
-      // Sort unavailable products by rank
-        const sortedUnavailableProducts = unavailableProducts.sort((a, b) => a.rank - b.rank);
-
-      // Concatenate available and unavailable products
-        return [...sortedAvailableProducts, ...sortedUnavailableProducts];
-      } else {
-        return products;
-      }
-    },
+    }
       
   },
   computed: {
-    currentPriceOrder() {
-      return this.relevance ? '' : this.priceOrder;
-    },
     itemsToDisplay() {
       let products = this.products       
       let firstFiltered = this.filterByAvailability(products)
       let secondFiltered =  this.filterByBrand(firstFiltered)
-      let thirdFiltered = this.filterByPrice(secondFiltered)
-      return this.filterByRelevance(thirdFiltered)
-
+      return this.sortOrder(secondFiltered)
     },
   },
 };
