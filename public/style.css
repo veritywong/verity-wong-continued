@@ -1,8 +1,18 @@
-
-
 li {
   list-style-type: none;
   display: inline-block;
   margin: 1px;
 
+}
+
+.app {
+  max-width: 1024px;
+  margin: 0 auto;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: #606569;
+}
+
+.link {
+  color: #3a7f71;
 }

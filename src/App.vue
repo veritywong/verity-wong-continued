@@ -4,35 +4,32 @@
 
     <div class="filters">
       <h3>Filters</h3>
-      <div class="in-stock-checkbox">
-        <Checkbox @click="toggleIsAvailable" text="In Stock"/>
+      <div class="checkboxes">
+        <div class="in-stock-checkbox">
+          <Checkbox @click="toggleIsAvailable" text="In Stock"/>
+        </div>
+        <div class="adidas-checkbox">
+          <Checkbox @click="toggleIsAdidas" text="Adidas"/>
+        </div>
+        <div class="converse-checkbox">
+          <Checkbox @click="toggleIsConverse" text="Converse"/>
+        </div>
+        <div class="crocs-checkbox">
+          <Checkbox @click="toggleIsCrocs" text="Crocs"/>
+        </div>
+        <div class="new-balance-checkbox">
+          <Checkbox @click="toggleIsNewBalance" text="New Balance"/>
+        </div>
+        <div class="nike-checkbox">
+          <Checkbox @click="toggleIsNike" text="Nike"/>
+        </div>
       </div>
-      <div class="adidas-checkbox">
-        <Checkbox @click="toggleIsAdidas" text="Adidas"/>
-      </div>
-      <div class="nike-checkbox">
-        <Checkbox @click="toggleIsNike" text="Nike"/>
-      </div>
-      <div class="converse-checkbox">
-        <Checkbox @click="toggleIsConverse" text="Converse"/>
-      </div>
-      <div class="crocs-checkbox">
-        <Checkbox @click="toggleIsCrocs" text="Crocs"/>
-      </div>
-      <div class="new-balance-checkbox">
-        <Checkbox @click="toggleIsNewBalance" text="New Balance"/>
-      </div>
-      
-      <div>
-        <label for="sortBy">Sort By: </label>
-        <select v-model="sortBy">
-          <option value=""></option>
-          <option value="ascending">Low - High</option>
-          <option value="descending">High - Low</option>
-          <option value="relevance">Relevance</option>
-        </select>
+
+      <div class="drowdown-menu">
+        <DropdownMenu text="Sort By: " @selectedOption="updateSortBy"/>
       </div>
     </div>
+
     <p>Results: {{ itemsToDisplay.length }}</p>
 
     <div class="product-grid">
@@ -56,13 +53,13 @@
 import ProductGridItem from './components/ProductGridItem.vue';
 import products from './data/products.json';
 import Checkbox from './components/Checkbox.vue';
+import DropdownMenu from './components/DropdownMenu.vue';
 
 export default {
   name: 'App',
   components: {
-    ProductGridItem, Checkbox,
+    ProductGridItem, Checkbox, DropdownMenu,
   },
-  props: ['products'],
   data() {
     return {
       products: products,
@@ -79,6 +76,9 @@ export default {
   methods: {
     toggleIsAvailable() {
       this.isAvailable = !this.isAvailable;
+    },
+    updateSortBy(selectedOption) {
+      this.sortBy = selectedOption
     },
     updateBrands(state, brand) {
         if (state) {
@@ -150,6 +150,7 @@ export default {
   },
   computed: {
     itemsToDisplay() {
+      // console.log(this.sortBy)
       let products = this.products       
       let firstFiltered = this.filterByAvailability(products)
       let secondFiltered =  this.filterByBrand(firstFiltered)
@@ -159,16 +160,4 @@ export default {
 };
 </script>
 
-<style>
-.app {
-  max-width: 1024px;
-  margin: 0 auto;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  color: #606569;
-}
 
-.link {
-  color: #3a7f71;
-}
-</style>

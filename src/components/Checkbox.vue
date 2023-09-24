@@ -12,6 +12,7 @@
 export default {
   name: 'Checkbox',
   props: ['text'],
+  emits: ['click'],
   data() {
     return {
       status: false,
