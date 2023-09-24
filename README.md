@@ -1,5 +1,14 @@
 # Hullabalook Technical Assessment
 
+## Approach
+- Created a brands filter so that toggle added and removed selected brands from a brands array and returned these brands.
+- Diagrammed and updated itemsToDisplay method so that all filters work together.
+- Refactored checkboxes, ProductGrid and DropdownMenu into their own components.
+- Further things to consider - should the filter options be stored in a Filter component?
+
+## Diagram
+![diagram for display function](./diagrams/diagram.png)
+
 You are provided with a set of products and are required to create a products listing page for a footwear retailer.
 
 Write functionality and styling to:
