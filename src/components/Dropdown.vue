@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: 'DropdownMenu',
+  name: 'Dropdown',
   props: ['text'],
   emits: ['selectedOption'],
   data() {

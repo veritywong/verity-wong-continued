@@ -26,7 +26,7 @@
       </div>
 
       <div class="drowdown-menu">
-        <DropdownMenu text="Sort By: " @selectedOption="updateSortBy"/>
+        <Dropdown text="Sort By: " @selectedOption="updateSortBy"/>
       </div>
     </div>
 
@@ -42,13 +42,13 @@
 <script>
 import products from './data/products.json';
 import Checkbox from './components/Checkbox.vue';
-import DropdownMenu from './components/DropdownMenu.vue';
+import Dropdown from './components/Dropdown.vue';
 import ProductGrid from './components/ProductGrid.vue'
 
 export default {
   name: 'App',
   components: {
-    Checkbox, DropdownMenu, ProductGrid,
+    Checkbox, Dropdown, ProductGrid,
   },
   data() {
     return {
